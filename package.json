@@ -1,0 +1,46 @@
+{
+  "name": "nova-mini-o1",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx ./src/bin/www"
+  },
+  "_moduleAliases": {
+    "@controllers": "dist/controllers",
+    "@models": "dist/models",
+    "@routes": "dist/routes",
+    "@utils": "dist/utils"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.779.0",
+    "cookie-parser": "^1.4.7",
+    "debug": "^4.4.0",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "express-validator": "^7.2.1",
+    "http": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.2",
+    "multer-s3": "^3.0.1",
+    "mysql2": "^3.14.0",
+    "path": "^0.12.7",
+    "sequelize": "^6.37.7",
+    "url": "^0.11.4"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.149",
+    "@types/cookie-parser": "^1.4.8",
+    "@types/express": "^5.0.1",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/multer": "^1.4.12",
+    "@types/multer-s3": "^3.0.3",
+    "eslint": "^9.25.1",
+    "prettier": "^3.5.3",
+    "sequelize-cli": "^6.6.2",
+    "sequelize-typescript": "^2.1.6",
+    "tsc": "^2.0.4",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3"
+  }
+}
