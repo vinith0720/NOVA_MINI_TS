@@ -157,3 +157,26 @@ export const putCompanyValidation = [
     .withMessage('Email must be between 10 and 100 characters')
     .normalizeEmail()
 ];
+
+
+export const validateCsvData = [
+  body('data')
+    .isArray({ min: 1 })
+    .withMessage('Data must be a non-empty array'),
+
+  body('data.*.name')
+    .isString()
+    .withMessage('Name must be a string')
+    .notEmpty()
+    .withMessage('Name is required'),
+
+  body('data.*.email')
+    .isEmail()
+    .withMessage('Invalid email'),
+
+  body('data.*.companyId')
+    .isInt({min:1})
+    .withMessage('CompanyId must be a Integer')
+    .notEmpty()
+    .withMessage('CompanyId is required'),
+];

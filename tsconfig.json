@@ -15,7 +15,8 @@
       "@controllers/*": ["src/controllers/*"],
       "@models/*": ["src/models/*"],
       "@routes/*": ["src/routes/*"],
-      "@middleware/*": ["src/middleware/*"]
+      "@middleware/*": ["src/middleware/*"],
+      "@utils/*":["src/utils/*"]
     },
     "resolveJsonModule": true,                  // Import JSON files
     "types": ["node"]                           // Include Node.js types

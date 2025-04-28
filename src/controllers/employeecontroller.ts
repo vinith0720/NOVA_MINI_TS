@@ -150,3 +150,25 @@ export const postEmployeeProfileById = async (req: Request<{ id: string }>, res:
     res.status(500).json({ message: 'Upload failed', error });
   }
 };
+
+// POST : BulkInsertEmpoyee
+
+export const postBulkInsertEmployee = async (req:Request,res:Response,next:NextFunction) => { 
+try {
+      const data = req.body.data;
+
+      const insertedEmployees = await Employee.bulkCreate(data, {
+        validate: true, 
+        ignoreDuplicates: true, 
+      });
+      
+      res.status(201).json({
+        message: 'Employees inserted successfully',
+        totalInserted: insertedEmployees.length,
+        data: insertedEmployees,
+      });
+  
+} catch (error) {
+  next(error);
+}
+};

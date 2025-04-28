@@ -36,6 +36,7 @@ export const initEmployeeModel = (sequelize:Sequelize):typeof Employee => {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
+        allowNull:false
       },
       name: {
         type: DataTypes.STRING,
@@ -44,6 +45,7 @@ export const initEmployeeModel = (sequelize:Sequelize):typeof Employee => {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique:true
       },
       profileurl: {
         type: DataTypes.STRING,

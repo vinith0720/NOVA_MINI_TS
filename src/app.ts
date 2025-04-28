@@ -1,5 +1,5 @@
 // import 'module-alias/register';
-import express,{Request,Response,} from "express";
+import express,{NextFunction, Request,Response,} from "express";
 import cookieParser from "cookie-parser";
 import multer from 'multer';
 
@@ -22,9 +22,14 @@ app.use('/employee', employeeRouter);
 app.use((
   err: any, 
   req: Request,
-  res: Response
+  res: Response,
+  next:NextFunction
 ): void => {
   console.error(err.stack);
+  if (err instanceof multer.MulterError) {
+    res.status(400).json({ error: `Multer Error: ${err.message}` });
+    return;
+  }
 
   if (err instanceof SyntaxError && 'status' in err && err.status === 400 && 'body' in err) {
     res.status(400).json({
@@ -34,10 +39,6 @@ app.use((
     return;
   }
 
-  if (err instanceof multer.MulterError) {
-    res.status(400).json({ error: `Multer Error: ${err.message}` });
-    return;
-  }
 
   const statusCode = (err.status as number) || 500;
   res.status(statusCode).json({

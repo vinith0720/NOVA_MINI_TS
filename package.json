@@ -15,6 +15,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.779.0",
     "cookie-parser": "^1.4.7",
+    "csv-parser": "^3.2.0",
     "debug": "^4.4.0",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",

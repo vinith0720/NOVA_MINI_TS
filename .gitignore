@@ -4,7 +4,7 @@ dest/
 
 # Ignore environment variables (e.g., secrets)
 .env
-
+*.csv
 # Ignore compiled files
 *.class
 *.pyc

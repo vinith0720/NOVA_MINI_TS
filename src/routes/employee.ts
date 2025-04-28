@@ -9,6 +9,7 @@ import {
   getEmployeeById,
   postEmployeeProfileById,
   employeefoundornot,
+  postBulkInsertEmployee,
 } from "@controllers/employeecontroller";
 
 import {
@@ -16,11 +17,13 @@ import {
   idValidation,
   bodyValidationEmployee,
   putEmployeeValidation,
+  validateCsvData
 } from "@middleware/validations";
 
 import authorization from '@middleware/jwt';
 
-import awsUpload from '@middleware/multers';
+import awsUpload, { memmoryUpload } from '@middleware/multers';
+import { csvtojsonarray } from '@middleware/csvEmployeeUpdate';
 
 router.get('/',authorization, getEmployee);
 
@@ -46,5 +49,18 @@ router.post( "/profile/:id",authorization, idValidation, validationErrorMiddlewa
   postEmployeeProfileById
 );
 
+// Bulkinsert Employee with Csv
+
+router.post("/csvupload", authorization,
+  (req:Request, res:Response, next:NextFunction) => {
+    memmoryUpload(req, res, function (err) {
+      if (err) {
+        next(err);
+        return; 
+      }
+      next();
+    });
+  }, 
+  csvtojsonarray , validateCsvData , validationErrorMiddleware , postBulkInsertEmployee );
 
 export default router;  

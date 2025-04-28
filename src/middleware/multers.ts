@@ -1,10 +1,9 @@
-import multer, { StorageEngine } from "multer";
+import multer, { memoryStorage, StorageEngine } from "multer";
 import multerS3 from "multer-s3";
 import { S3Client } from "@aws-sdk/client-s3";
 import dotenv from "dotenv";
-import { Request } from "express";
+import e, { Request } from "express";
 import { S3ClientConfig } from "@aws-sdk/client-s3";
-import { Callback } from "aws-lambda"; // Optional: Used for cb/cd types
 
 dotenv.config();
 
@@ -40,5 +39,18 @@ const awsUpload = multer({
   storage,
   limits: { fileSize: 5 * 1024 * 1024 },
 }).single("file");
+
+export const memmoryUpload = multer({
+  storage:memoryStorage(),
+  limits:{fieldSize:5 * 1024 * 1024 },
+  fileFilter: (req , file ,cb)=>{
+    if (file.mimetype === 'text/csv' || file.originalname.endsWith('.csv')) {
+      cb(null, true); 
+    } else {
+      cb(new Error('Only CSV files are allowed!')); 
+    }
+  },
+}).single("file");
+
 
 export default awsUpload;
