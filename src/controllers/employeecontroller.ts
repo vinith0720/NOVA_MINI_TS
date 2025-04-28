@@ -155,13 +155,12 @@ export const postEmployeeProfileById = async (req: Request<{ id: string }>, res:
 
 export const postBulkInsertEmployee = async (req:Request,res:Response,next:NextFunction) => { 
 try {
-      const data = req.body.data;
-
-      const insertedEmployees = await Employee.bulkCreate(data, {
+      const employees = req.body.data;
+      console.log(employees);
+      const insertedEmployees = await Employee.bulkCreate(employees, {
         validate: true, 
         ignoreDuplicates: true, 
       });
-      
       res.status(201).json({
         message: 'Employees inserted successfully',
         totalInserted: insertedEmployees.length,
@@ -172,3 +171,13 @@ try {
   next(error);
 }
 };
+
+// for (let i = 0; i < employees.length; i++) {
+//   try {
+//     await Employee.create(employees[i]);
+//     console.log(`Employee ${employees[i].name} added.`);
+//   } catch (error) {
+//     console.error('Error inserting employee:', error);
+//   }
+// }
+// res.status(201).json({msg:"insert successfully",employees})
