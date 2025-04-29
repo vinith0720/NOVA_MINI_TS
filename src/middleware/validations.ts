@@ -6,7 +6,7 @@ export const validationErrorMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
-):  void => {
+): void => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     res.status(400).json({ errors: errors.array() });
@@ -17,19 +17,11 @@ export const validationErrorMiddleware = (
 
 // JWT Token Validation
 export const jwtTokenValidation = [
-  body('name')
-    .notEmpty()
-    .withMessage('Company name is required')
-    .isString()
-    .trim()
+  body('name').notEmpty().withMessage('Company name is required').isString().trim(),
 ];
 
 // Param ID validation
-export const idValidation = [
-  param('id')
-    .isInt({ min: 1 })
-    .withMessage('Invalid user ID')
-];
+export const idValidation = [param('id').isInt({ min: 1 }).withMessage('Invalid user ID')];
 
 // Employee Body Validations - POST
 export const bodyValidationEmployee = [
@@ -47,10 +39,7 @@ export const bodyValidationEmployee = [
     .normalizeEmail()
     .withMessage('Provide valid email address'),
 
-  body('companyId')
-    .notEmpty()
-    .isInt({ min: 1 })
-    .withMessage('Provide valid companyId')
+  body('companyId').notEmpty().isInt({ min: 1 }).withMessage('Provide valid companyId'),
 ];
 
 // Employee Body Validations - PUT
@@ -72,11 +61,7 @@ export const putEmployeeValidation = [
     .normalizeEmail()
     .withMessage('Provide valid email address'),
 
-  body('companyId')
-    .optional()
-    .notEmpty()
-    .isInt({ min: 1 })
-    .withMessage('Provide valid companyId')
+  body('companyId').optional().notEmpty().isInt({ min: 1 }).withMessage('Provide valid companyId'),
 ];
 
 // Company POST validation
@@ -93,7 +78,7 @@ export const postCompanyValidation = [
     .isString()
     .trim()
     .isLength({ min: 3 })
-    .withMessage('Provide a valid company location')
+    .withMessage('Provide a valid company location'),
 ];
 
 // Company PUT validation
@@ -120,10 +105,7 @@ export const putCompanyValidation = [
     .isLength({ min: 3 })
     .withMessage('Company location must be at least 3 characters long'),
 
-  body('employees')
-    .optional()
-    .isArray()
-    .withMessage('Employees must be an array'),
+  body('employees').optional().isArray().withMessage('Employees must be an array'),
 
   body('employees.*.id')
     .if(body('employees').exists())
@@ -155,14 +137,11 @@ export const putCompanyValidation = [
     .withMessage('Provide a valid email address')
     .isLength({ min: 10, max: 100 })
     .withMessage('Email must be between 10 and 100 characters')
-    .normalizeEmail()
+    .normalizeEmail(),
 ];
 
-
 export const validateCsvData = [
-  body('data')
-    .isArray({ min: 1 })
-    .withMessage('Data must be a non-empty array'),
+  body('data').isArray({ min: 1 }).withMessage('Data must be a non-empty array'),
 
   body('data.*.name')
     .isString()
@@ -170,12 +149,10 @@ export const validateCsvData = [
     .notEmpty()
     .withMessage('Name is required'),
 
-  body('data.*.email')
-    .isEmail()
-    .withMessage('Invalid email'),
+  body('data.*.email').isEmail().withMessage('Invalid email'),
 
   body('data.*.companyId')
-    .isInt({min:1})
+    .isInt({ min: 1 })
     .withMessage('CompanyId must be a Integer')
     .notEmpty()
     .withMessage('CompanyId is required'),

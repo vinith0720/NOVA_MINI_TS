@@ -12,7 +12,7 @@ interface EmployeeBody {
 }
 
 // GET: All employees
-export const getEmployee = async (req: Request, res: Response):Promise<void> => {
+export const getEmployee = async (req: Request, res: Response): Promise<void> => {
   try {
     const Employees = await Employee.findAll();
     if (!Employees || Employees.length === 0) {
@@ -26,10 +26,10 @@ export const getEmployee = async (req: Request, res: Response):Promise<void> => 
 };
 
 // POST: Create new employee
-export const postEmployee = async (req: Request, res: Response):Promise<void> => {
+export const postEmployee = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, email, companyId } = req.body;
-    const newEmployee = await Employee.create({name , email, companyId});
+    const newEmployee = await Employee.create({ name, email, companyId });
     res.status(201).json({
       msg: 'Employee created successfully',
       employee: newEmployee,
@@ -40,7 +40,10 @@ export const postEmployee = async (req: Request, res: Response):Promise<void> =>
 };
 
 // PUT: Update employee by ID
-export const putEmployeeById = async (req: Request<{ id: string }, {}, EmployeeBody>, res: Response):Promise<void> => {
+export const putEmployeeById = async (
+  req: Request<{ id: string }, EmployeeBody>,
+  res: Response
+): Promise<void> => {
   try {
     const { name, email, companyId } = req.body;
     const id = parseInt(req.params.id);
@@ -48,7 +51,7 @@ export const putEmployeeById = async (req: Request<{ id: string }, {}, EmployeeB
 
     if (!employee) {
       res.status(404).json({ msg: 'Employee not found' });
-      return ;
+      return;
     }
 
     const updatedname = name ?? employee.name;
@@ -73,7 +76,10 @@ export const putEmployeeById = async (req: Request<{ id: string }, {}, EmployeeB
 };
 
 // DELETE: Remove employee by ID
-export const deleteEmployeeById = async (req: Request<{ id: string }>, res: Response):Promise<void> => {
+export const deleteEmployeeById = async (
+  req: Request<{ id: string }>,
+  res: Response
+): Promise<void> => {
   try {
     const id = parseInt(req.params.id);
     const employee = await Employee.findByPk(id);
@@ -90,13 +96,16 @@ export const deleteEmployeeById = async (req: Request<{ id: string }>, res: Resp
 };
 
 // GET: One employee by ID
-export const getEmployeeById = async (req: Request<{ id: string }>, res: Response):Promise<void> => {
+export const getEmployeeById = async (
+  req: Request<{ id: string }>,
+  res: Response
+): Promise<void> => {
   try {
     const id = parseInt(req.params.id);
     const employee = await Employee.findByPk(id);
     if (!employee) {
       res.status(404).json({ msg: 'Employee not found' });
-      return; 
+      return;
     }
     res.status(200).json(employee);
   } catch (error) {
@@ -105,7 +114,11 @@ export const getEmployeeById = async (req: Request<{ id: string }>, res: Respons
 };
 
 // Middleware: check if employee exists before continuing
-export const employeefoundornot = async (req: Request<{ id: string }>, res: Response, next: NextFunction):Promise<void> => {
+export const employeefoundornot = async (
+  req: Request<{ id: string }>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const id = parseInt(req.params.id);
     const employee = await Employee.findByPk(id);
@@ -120,7 +133,10 @@ export const employeefoundornot = async (req: Request<{ id: string }>, res: Resp
 };
 
 // POST: Upload employee profile picture
-export const postEmployeeProfileById = async (req: Request<{ id: string }>, res: Response):Promise<void> => {
+export const postEmployeeProfileById = async (
+  req: Request<{ id: string }>,
+  res: Response
+): Promise<void> => {
   try {
     const id = parseInt(req.params.id);
 
@@ -131,20 +147,17 @@ export const postEmployeeProfileById = async (req: Request<{ id: string }>, res:
 
     const profileurl = (req.file as any).location;
 
-    const [updatedCount] = await Employee.update(
-      { profileurl },
-      { where: { id } }
-    );
+    const [updatedCount] = await Employee.update({ profileurl }, { where: { id } });
 
     if (updatedCount === 1) {
       res.status(200).json({
         message: 'File uploaded successfully',
         profileurl,
       });
-      return; 
+      return;
     } else {
       res.status(400).json({ message: 'No changes made to the Employee!' });
-      return; 
+      return;
     }
   } catch (error) {
     res.status(500).json({ message: 'Upload failed', error });
@@ -153,23 +166,22 @@ export const postEmployeeProfileById = async (req: Request<{ id: string }>, res:
 
 // POST : BulkInsertEmpoyee
 
-export const postBulkInsertEmployee = async (req:Request,res:Response,next:NextFunction) => { 
-try {
-      const employees = req.body.data;
-      console.log(employees);
-      const insertedEmployees = await Employee.bulkCreate(employees, {
-        validate: true, 
-        ignoreDuplicates: true, 
-      });
-      res.status(201).json({
-        message: 'Employees inserted successfully',
-        totalInserted: insertedEmployees.length,
-        data: insertedEmployees,
-      });
-  
-} catch (error) {
-  next(error);
-}
+export const postBulkInsertEmployee = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const employees = req.body.data;
+    console.log(employees);
+    const insertedEmployees = await Employee.bulkCreate(employees, {
+      validate: true,
+      ignoreDuplicates: true,
+    });
+    res.status(201).json({
+      message: 'Employees inserted successfully',
+      totalInserted: insertedEmployees.length,
+      data: insertedEmployees,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 // for (let i = 0; i < employees.length; i++) {

@@ -1,14 +1,19 @@
-import multer, { memoryStorage, StorageEngine } from "multer";
-import multerS3 from "multer-s3";
-import { S3Client } from "@aws-sdk/client-s3";
-import dotenv from "dotenv";
-import e, { Request } from "express";
-import { S3ClientConfig } from "@aws-sdk/client-s3";
+import multer, { memoryStorage, StorageEngine } from 'multer';
+import multerS3 from 'multer-s3';
+import { S3Client } from '@aws-sdk/client-s3';
+import dotenv from 'dotenv';
+import { Request } from 'express';
+import { S3ClientConfig } from '@aws-sdk/client-s3';
 
 dotenv.config();
 
-if (!process.env.AWS_REGION || !process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY || !process.env.AWS_BUCKET) {
-  throw new Error("AWS credentials or bucket not defined in .env");
+if (
+  !process.env.AWS_REGION ||
+  !process.env.AWS_ACCESS_KEY_ID ||
+  !process.env.AWS_SECRET_ACCESS_KEY ||
+  !process.env.AWS_BUCKET
+) {
+  throw new Error('AWS credentials or bucket not defined in .env');
 }
 
 export const bucket: string = process.env.AWS_BUCKET;
@@ -38,19 +43,18 @@ const storage: StorageEngine = multerS3({
 const awsUpload = multer({
   storage,
   limits: { fileSize: 5 * 1024 * 1024 },
-}).single("file");
+}).single('file');
 
 export const memmoryUpload = multer({
-  storage:memoryStorage(),
-  limits:{fieldSize:5 * 1024 * 1024 },
-  fileFilter: (req , file ,cb)=>{
+  storage: memoryStorage(),
+  limits: { fieldSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
     if (file.mimetype === 'text/csv' || file.originalname.endsWith('.csv')) {
-      cb(null, true); 
+      cb(null, true);
     } else {
-      cb(new Error('Only CSV files are allowed!')); 
+      cb(new Error('Only CSV files are allowed!'));
     }
   },
-}).single("file");
-
+}).single('file');
 
 export default awsUpload;

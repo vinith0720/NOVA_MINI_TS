@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import db from "../models";
+import { Request, Response } from 'express';
+import db from '../models';
 const { Company, Employee } = db;
 
 // GET all companies with employees
@@ -9,8 +9,8 @@ export const getCompany = async (req: Request, res: Response): Promise<void> => 
       include: [
         {
           model: Employee,
-          attributes: ["id", "name", "email", "profileurl"],
-          as: "employees",
+          attributes: ['id', 'name', 'email', 'profileurl'],
+          as: 'employees',
         },
       ],
     });
@@ -28,14 +28,14 @@ export const getCompanyById = async (req: Request, res: Response): Promise<void>
       include: [
         {
           model: Employee,
-          attributes: ["id", "name", "email", "profileurl"],
-          as: "employees",
+          attributes: ['id', 'name', 'email', 'profileurl'],
+          as: 'employees',
         },
       ],
     });
 
     if (!company) {
-      res.status(404).json({ msg: "Company not found" });
+      res.status(404).json({ msg: 'Company not found' });
       return;
     }
 
@@ -63,11 +63,11 @@ export const putCompanyById = async (req: Request, res: Response): Promise<void>
     const { name, location, employees } = req.body;
 
     const company = await Company.findByPk(id, {
-      include: [{ model: Employee, as: "employees" }],
+      include: [{ model: Employee, as: 'employees' }],
     });
 
     if (!company) {
-      res.status(404).json({ message: "Company not found" });
+      res.status(404).json({ message: 'Company not found' });
       return;
     }
 
@@ -86,7 +86,7 @@ export const putCompanyById = async (req: Request, res: Response): Promise<void>
     }
 
     const updatedCompany = await Company.findByPk(id, {
-      include: [{ model: Employee, as: "employees" }],
+      include: [{ model: Employee, as: 'employees' }],
     });
 
     res.status(200).json(updatedCompany);
@@ -102,12 +102,12 @@ export const deleteCompanyById = async (req: Request, res: Response): Promise<vo
     const company = await Company.findByPk(id);
 
     if (!company) {
-      res.status(404).json({ message: "Company not found" });
+      res.status(404).json({ message: 'Company not found' });
       return;
     }
 
     await Company.destroy({ where: { id } });
-    res.json({ message: "Company and associated employees deleted successfully" });
+    res.json({ message: 'Company and associated employees deleted successfully' });
   } catch (error) {
     res.status(500).json({ error });
   }

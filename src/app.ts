@@ -1,14 +1,14 @@
 // import 'module-alias/register';
-import express,{NextFunction, Request,Response,} from "express";
-import cookieParser from "cookie-parser";
+
+import express, { Request, Response } from 'express';
+import cookieParser from 'cookie-parser';
 import multer from 'multer';
 
-import indexRouter from  "@routes/index"
-import companyRouter from "@routes/company"
-import employeeRouter from "@routes/employee"
+import indexRouter from '@routes/index';
+import companyRouter from '@routes/company';
+import employeeRouter from '@routes/employee';
 
-var app = express();
-
+const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -18,13 +18,7 @@ app.use('/', indexRouter);
 app.use('/company', companyRouter);
 app.use('/employee', employeeRouter);
 
-
-app.use((
-  err: any, 
-  req: Request,
-  res: Response,
-  next:NextFunction
-): void => {
+app.use((err: any, req: Request, res: Response): void => {
   console.error(err.stack);
   if (err instanceof multer.MulterError) {
     res.status(400).json({ error: `Multer Error: ${err.message}` });
@@ -38,7 +32,6 @@ app.use((
     });
     return;
   }
-
 
   const statusCode = (err.status as number) || 500;
   res.status(statusCode).json({

@@ -1,4 +1,3 @@
-
 import debug from 'debug';
 import http from 'http';
 import app from '../app';
@@ -24,8 +23,8 @@ server.on('listening', onListening);
  */
 function normalizePort(val: string): number | string | false {
   const port = parseInt(val, 10);
-  if (isNaN(port)) return val;      // named pipe
-  if (port >= 0) return port;       // port number
+  if (isNaN(port)) return val; // named pipe
+  if (port >= 0) return port; // port number
   return false;
 }
 
@@ -56,10 +55,11 @@ function onError(error: NodeJS.ErrnoException): void {
  */
 function onListening(): void {
   const addr = server.address();
-  const bind = typeof addr === 'string'
-    ? `pipe ${addr}`
-    : addr && typeof addr === 'object'
-    ? `port ${addr.port}`
-    : 'unknown';
+  const bind =
+    typeof addr === 'string'
+      ? `pipe ${addr}`
+      : addr && typeof addr === 'object'
+        ? `port ${addr.port}`
+        : 'unknown';
   debugServer(`Listening on ${bind}`);
 }

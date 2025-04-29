@@ -1,7 +1,6 @@
 'use strict';
-import { Model, DataTypes, Sequelize, Optional } from 'sequelize';
+import { Model, DataTypes, Sequelize } from 'sequelize';
 import { DB } from '.'; // type of DB with all models
-
 
 export interface CompanyAttributes {
   id: number;
@@ -9,11 +8,12 @@ export interface CompanyAttributes {
   location: string;
 }
 
-export interface CompanyCreationAttributes extends Partial<CompanyAttributes> {}
+export type CompanyCreationAttributes = Partial<CompanyAttributes>;
 
-
-export class Company extends Model<CompanyAttributes, CompanyCreationAttributes>
-  implements CompanyAttributes {
+export class Company
+  extends Model<CompanyAttributes, CompanyCreationAttributes>
+  implements CompanyAttributes
+{
   public id!: number;
   public name!: string;
   public location!: string;
@@ -26,7 +26,7 @@ export class Company extends Model<CompanyAttributes, CompanyCreationAttributes>
   }
 }
 
-export const initCompanyModel = (sequelize: Sequelize):typeof Company => {
+export const initCompanyModel = (sequelize: Sequelize): typeof Company => {
   Company.init(
     {
       id: {

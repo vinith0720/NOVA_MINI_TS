@@ -1,5 +1,5 @@
-import dotenv from "dotenv";
-import { SequelizeOptions } from "sequelize-typescript";
+import dotenv from 'dotenv';
+import { SequelizeOptions } from 'sequelize-typescript';
 
 dotenv.config();
 
@@ -13,22 +13,22 @@ const config: DBConfig = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME!,
     host: process.env.HOST!,
-    dialect: process.env.DIALECT as any, 
+    dialect: process.env.DIALECT as any,
   },
   test: {
-    username: "root",
-    password: "",
-    database: "database_test",
-    host: "127.0.0.1",
-    dialect: "mysql",
+    username: 'root',
+    password: '',
+    database: 'database_test',
+    host: '127.0.0.1',
+    dialect: 'mysql',
   },
   production: {
-    username: "root",
-    password: "",
-    database: "database_production",
-    host: "127.0.0.1",
-    dialect: "mysql",
-  }
+    username: 'root',
+    password: '',
+    database: 'database_production',
+    host: '127.0.0.1',
+    dialect: 'mysql',
+  },
 };
 
 export default config;

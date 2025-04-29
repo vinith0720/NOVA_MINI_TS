@@ -1,17 +1,12 @@
-import express from "express";
-var router = express.Router();
-import { loginToken } from "@middleware/jwt";
-import { jwtTokenValidation, validationErrorMiddleware } from "@middleware/validations";
-import db from "@models/index";
+import express from 'express';
+import { loginToken } from '@middleware/jwt';
+import { jwtTokenValidation, validationErrorMiddleware } from '@middleware/validations';
 
-const {Company,Employee} = db;
-
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.status(200).send('Express is working !!!')
+const router = express.Router();
+router.get('/', function (req, res) {
+  res.status(200).send('Express is working !!!');
 });
 
-
-router.post("/", jwtTokenValidation, validationErrorMiddleware,loginToken);
+router.post('/', jwtTokenValidation, validationErrorMiddleware, loginToken);
 
 export default router;
