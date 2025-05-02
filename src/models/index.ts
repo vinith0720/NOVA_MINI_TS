@@ -2,7 +2,7 @@ import { Sequelize } from 'sequelize';
 import { initCompanyModel, Company } from '@models/company';
 import { initEmployeeModel, Employee } from '@models/employee';
 
-import dbconfig from '@config/config';
+import dbconfig from '@config/database';
 
 export interface DB {
   sequelize: Sequelize;
