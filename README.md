@@ -10,7 +10,7 @@ The **Company_Employee_Management_API** is a robust backend system designed to m
 
 All API endpoints, sample responses, and test cases are documented in Postman:
 
-🔗 [View Postman Collection](https://.postman.co/workspace/My-Workspace~8fce22c3-4c05-4031-83f3-7b6ba78ddafa/collection/38429330-85473855-2237-4006-9f77-cd181ed357d3?action=share&creator=38429330)
+🔗 [View Postman Collection](https://www.postman.com/navigation-cosmologist-2842457/workspace/nova-mini-ts/collection/38429330-d0ad5604-7c89-4465-9e8e-0ef02b72a978?action=share&creator=38429330)
 
 <br>
 
