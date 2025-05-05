@@ -7,6 +7,7 @@ import multer from 'multer';
 import indexRouter from '@routes/index';
 import companyRouter from '@routes/company';
 import employeeRouter from '@routes/employee';
+import emailRouter from '@routes/email';
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(cookieParser());
 app.use('/', indexRouter);
 app.use('/company', companyRouter);
 app.use('/employee', employeeRouter);
+app.use('/email', emailRouter);
 
 app.use((err: any, req: Request, res: Response): void => {
   console.error(err.stack);

@@ -1,6 +1,7 @@
 import { Sequelize } from 'sequelize';
 import { initCompanyModel, Company } from '@models/company';
 import { initEmployeeModel, Employee } from '@models/employee';
+import { initEmailModel, Email } from '@models/email';
 
 import dbconfig from '@config/config';
 
@@ -8,6 +9,7 @@ export interface DB {
   sequelize: Sequelize;
   Company: typeof Company;
   Employee: typeof Employee;
+  Email: typeof Email;
 }
 
 const env = process.env.NODE_ENV || 'development';
@@ -28,12 +30,14 @@ const sequelize = new Sequelize(
 // Initialize models (assigning returned class to constant for clarity)
 const CompanyModel = initCompanyModel(sequelize);
 const EmployeeModel = initEmployeeModel(sequelize);
+const EmailModel = initEmailModel(sequelize);
 
 // Cast as DB shape
 const db: DB = {
   sequelize,
   Company: CompanyModel,
   Employee: EmployeeModel,
+  Email: EmailModel,
 };
 
 // Associate models
