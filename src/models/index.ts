@@ -2,6 +2,7 @@ import { Sequelize } from 'sequelize';
 import { initCompanyModel, Company } from '@models/company';
 import { initEmployeeModel, Employee } from '@models/employee';
 import { initEmailModel, Email } from '@models/email';
+import { initialHtmlmodel, Html } from './html';
 
 import dbconfig from '@config/config';
 
@@ -10,6 +11,7 @@ export interface DB {
   Company: typeof Company;
   Employee: typeof Employee;
   Email: typeof Email;
+  Html: typeof Html;
 }
 
 const env = process.env.NODE_ENV || 'development';
@@ -31,6 +33,7 @@ const sequelize = new Sequelize(
 const CompanyModel = initCompanyModel(sequelize);
 const EmployeeModel = initEmployeeModel(sequelize);
 const EmailModel = initEmailModel(sequelize);
+const HtmlModel = initialHtmlmodel(sequelize);
 
 // Cast as DB shape
 const db: DB = {
@@ -38,6 +41,7 @@ const db: DB = {
   Company: CompanyModel,
   Employee: EmployeeModel,
   Email: EmailModel,
+  Html: HtmlModel,
 };
 
 // Associate models
