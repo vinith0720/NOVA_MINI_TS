@@ -31,6 +31,8 @@ export class Employee
     Employee.belongsTo(db.Company, {
       foreignKey: 'companyId',
       as: 'company',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
     });
   }
 }
@@ -59,6 +61,10 @@ export const initEmployeeModel = (sequelize: Sequelize): typeof Employee => {
       companyId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        references: {
+          model: 'company',
+          key: 'id',
+        },
       },
     },
     {
