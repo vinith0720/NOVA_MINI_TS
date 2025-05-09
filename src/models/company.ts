@@ -22,6 +22,8 @@ export class Company
     Company.hasMany(db.Employee, {
       foreignKey: 'companyId',
       as: 'employees',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
     });
   }
 }
