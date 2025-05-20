@@ -4,6 +4,9 @@ import express, { Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import multer from 'multer';
 
+import swaggerUi from 'swagger-ui-express';
+import swaggerspec from './swagger/swagger';
+
 import indexRouter from '@routes/index';
 import companyRouter from '@routes/company';
 import employeeRouter from '@routes/employee';
@@ -11,14 +14,22 @@ import emailRouter from '@routes/email';
 
 const app = express();
 
+// middleware
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+// swagger route
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerspec));
+
+// routes
 app.use('/', indexRouter);
 app.use('/company', companyRouter);
 app.use('/employee', employeeRouter);
 app.use('/email', emailRouter);
+
+// error handler middleware
 
 app.use((err: any, req: Request, res: Response): void => {
   console.error(err.stack);
