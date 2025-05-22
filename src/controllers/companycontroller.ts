@@ -33,6 +33,7 @@ export const getCompanyById = async (req: Request, res: Response): Promise<void>
         },
       ],
     });
+    // console.log('company id:', company?.get('employees'));
 
     if (!company) {
       res.status(404).json({ msg: 'Company not found' });
