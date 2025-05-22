@@ -12,6 +12,8 @@ interface EmployeeAttributes {
   updatedAt?: Date;
 }
 
+export type employeecsv = Pick<Employee, 'name' | 'email' | 'companyId'>;
+
 type EmployeeCreationAttributes = Optional<
   EmployeeAttributes,
   'id' | 'profileurl' | 'createdAt' | 'updatedAt'

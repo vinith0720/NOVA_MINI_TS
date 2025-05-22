@@ -1,11 +1,12 @@
 import { Request, Response } from 'express';
 import db from '../models';
+import { Company as company, companyEmployee } from '@models/company';
 const { Company, Employee } = db;
 
 // GET all companies with employees
 export const getCompany = async (req: Request, res: Response): Promise<void> => {
   try {
-    const results = await Company.findAll({
+    const results: companyEmployee[] | null = await Company.findAll({
       include: [
         {
           model: Employee,
@@ -23,8 +24,8 @@ export const getCompany = async (req: Request, res: Response): Promise<void> => 
 // GET company by ID
 export const getCompanyById = async (req: Request, res: Response): Promise<void> => {
   try {
-    const id = parseInt(req.params.id);
-    const company = await Company.findByPk(id, {
+    const id: number = parseInt(req.params.id);
+    const company: companyEmployee | null = await Company.findByPk(id, {
       include: [
         {
           model: Employee,
@@ -50,7 +51,7 @@ export const getCompanyById = async (req: Request, res: Response): Promise<void>
 export const postCompany = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, location } = req.body;
-    const company = await Company.create({ name, location });
+    const company: company | null = await Company.create({ name, location });
     res.status(201).json({ company });
   } catch (error) {
     res.status(500).json({ error });
@@ -63,8 +64,10 @@ export const putCompanyById = async (req: Request, res: Response): Promise<void>
     const id = parseInt(req.params.id);
     const { name, location, employees } = req.body;
 
-    const company = await Company.findByPk(id, {
-      include: [{ model: Employee, as: 'employees' }],
+    const company: companyEmployee | null = await Company.findByPk(id, {
+      include: [
+        { model: Employee, as: 'employees', attributes: ['id', 'name', 'email', 'profileurl'] },
+      ],
     });
 
     if (!company) {
@@ -72,8 +75,8 @@ export const putCompanyById = async (req: Request, res: Response): Promise<void>
       return;
     }
 
-    const updatedName = name ?? company.name;
-    const updatedLocation = location ?? company.location;
+    const updatedName: string = name ?? company.name;
+    const updatedLocation: string = location ?? company.location;
 
     await Company.update({ name: updatedName, location: updatedLocation }, { where: { id } });
 
@@ -100,7 +103,7 @@ export const putCompanyById = async (req: Request, res: Response): Promise<void>
 export const deleteCompanyById = async (req: Request, res: Response): Promise<void> => {
   try {
     const id = parseInt(req.params.id);
-    const company = await Company.findByPk(id);
+    const company: company | null = await Company.findByPk(id);
 
     if (!company) {
       res.status(404).json({ message: 'Company not found' });

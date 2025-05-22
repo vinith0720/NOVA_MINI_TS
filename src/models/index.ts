@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
 import { initCompanyModel, Company } from '@models/company';
 import { initEmployeeModel, Employee } from '@models/employee';
-import { initEmailModel, Email } from '@models/email';
+import { initEmailModel, Email } from '@models/emailtable';
 import { initialHtmlmodel, Html } from './html';
 
 import dbconfig from '@config/config';

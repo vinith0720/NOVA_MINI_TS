@@ -1,6 +1,7 @@
 'use strict';
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import { DB } from '.'; // type of DB with all models
+import { Employee } from './employee';
 
 export interface CompanyAttributes {
   id: number;
@@ -25,6 +26,10 @@ export class Company
     });
   }
 }
+
+export type companyEmployee = Company & {
+  employees?: Partial<Pick<Employee, 'companyId' | 'email' | 'id' | 'name'>>;
+};
 
 export const initCompanyModel = (sequelize: Sequelize): typeof Company => {
   Company.init(

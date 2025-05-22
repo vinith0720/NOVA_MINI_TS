@@ -1,9 +1,9 @@
 import csvParser from 'csv-parser';
 import { Readable } from 'stream';
-
-export const parseCsvBuffer = async (buffer: Buffer): Promise<any[]> => {
+import { employeecsv } from '@models/employee';
+export const parseCsvBuffer = async (buffer: Buffer): Promise<employeecsv[]> => {
   return new Promise((resolve, reject) => {
-    const results: any[] = [];
+    const results: employeecsv[] = [];
     Readable.from(buffer)
       .pipe(csvParser())
       .on('data', (data) => results.push(data))

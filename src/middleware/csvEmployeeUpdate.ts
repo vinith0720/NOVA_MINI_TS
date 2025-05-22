@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 import { parseCsvBuffer } from '@utils/csv';
+import { Employee } from '@models/employee';
 
 export const csvtojsonarray = async (
   req: Request,
@@ -12,7 +13,10 @@ export const csvtojsonarray = async (
       res.status(400).json({ msg: 'No file uploaded' });
       return;
     }
-    const csvData = await parseCsvBuffer(req.file.buffer);
+    const csvData: Pick<Employee, 'name' | 'email' | 'companyId'>[] = await parseCsvBuffer(
+      req.file.buffer
+    );
+    console.log(csvData.at(0)?.companyId);
     req.file.buffer = Buffer.alloc(0); // clear buffer memeory
     req.body.data = csvData;
     next();
