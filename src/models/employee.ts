@@ -1,23 +1,7 @@
 'use strict';
 import { Model, DataTypes, Sequelize, Optional } from 'sequelize';
 import { DB } from '.';
-
-interface EmployeeAttributes {
-  id: number;
-  name: string;
-  email: string;
-  profileurl?: string;
-  companyId: number;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
-
-export type employeecsv = Pick<Employee, 'name' | 'email' | 'companyId'>;
-
-type EmployeeCreationAttributes = Optional<
-  EmployeeAttributes,
-  'id' | 'profileurl' | 'createdAt' | 'updatedAt'
->;
+import { EmployeeAttributes, EmployeeCreationAttributes } from '@dto/employee';
 
 export class Employee
   extends Model<EmployeeAttributes, EmployeeCreationAttributes>

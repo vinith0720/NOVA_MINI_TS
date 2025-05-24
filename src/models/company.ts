@@ -2,14 +2,7 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import { DB } from '.'; // type of DB with all models
 import { Employee } from './employee';
-
-export interface CompanyAttributes {
-  id: number;
-  name: string;
-  location: string;
-}
-
-export type CompanyCreationAttributes = Partial<CompanyAttributes>;
+import { CompanyAttributes, CompanyCreationAttributes } from '@dto/company';
 
 export class Company
   extends Model<CompanyAttributes, CompanyCreationAttributes>
@@ -26,10 +19,6 @@ export class Company
     });
   }
 }
-
-export type companyEmployee = Company & {
-  employees?: Partial<Pick<Employee, 'companyId' | 'email' | 'id' | 'name'>>;
-};
 
 export const initCompanyModel = (sequelize: Sequelize): typeof Company => {
   Company.init(

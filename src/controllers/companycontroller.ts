@@ -1,12 +1,13 @@
 import { Request, Response } from 'express';
 import db from '../models';
-import { Company as company, companyEmployee } from '@models/company';
+import { Company as company } from '@models/company';
+import { companyEmployee } from '@dto/company';
 const { Company, Employee } = db;
 
 // GET all companies with employees
 export const getCompany = async (req: Request, res: Response): Promise<void> => {
   try {
-    const results: companyEmployee[] | null = await Company.findAll({
+    const results: companyEmployee[] = await Company.findAll({
       include: [
         {
           model: Employee,
@@ -89,7 +90,7 @@ export const putCompanyById = async (req: Request, res: Response): Promise<void>
       }
     }
 
-    const updatedCompany = await Company.findByPk(id, {
+    const updatedCompany: company | null = await Company.findByPk(id, {
       include: [{ model: Employee, as: 'employees' }],
     });
 

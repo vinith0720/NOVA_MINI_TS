@@ -1,16 +1,7 @@
 'use strict';
 
 import { Model, DataType, Sequelize, Optional, DataTypes } from 'sequelize';
-
-interface HtmlAttributes {
-  id: string;
-  name: string;
-  content: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
-
-type HtmlCreationAttributes = Optional<HtmlAttributes, 'id' | 'createdAt' | 'updatedAt'>;
+import { HtmlAttributes, HtmlCreationAttributes } from '@dto/html';
 
 export class Html extends Model<HtmlAttributes, HtmlCreationAttributes> implements HtmlAttributes {
   id!: string;

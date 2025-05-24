@@ -1,16 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import db from '@models/index';
-import { Employee as employee, employeecsv } from '@models/employee';
+import { Employee as employee } from '@models/employee';
+import { employeecsv } from '@dto/employee';
 
 const { Employee } = db;
-
-// Type for employee creation/update
-
-interface EmployeeBody {
-  name?: string;
-  email?: string;
-  companyId?: number;
-}
 
 // GET: All employees
 export const getEmployee = async (req: Request, res: Response): Promise<void> => {
@@ -41,13 +34,11 @@ export const postEmployee = async (req: Request, res: Response): Promise<void> =
 };
 
 // PUT: Update employee by ID
-export const putEmployeeById = async (
-  req: Request<{ id: string }, EmployeeBody>,
-  res: Response
-): Promise<void> => {
+export const putEmployeeById = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, email, companyId } = req.body;
-    const id = parseInt(req.params.id);
+    // const { name, email, companyId } = req.body;
+    const body: Partial<employeecsv> = req.body;
+    const id: number = parseInt(req.params.id);
     const employee: employee | null = await Employee.findByPk(id);
 
     if (!employee) {
@@ -55,9 +46,9 @@ export const putEmployeeById = async (
       return;
     }
 
-    const updatedname = name ?? employee.name;
-    const updatedemail = email ?? employee.email;
-    const updatedcompanyId = companyId ?? employee.companyId;
+    const updatedname: string = body.name ?? employee.name;
+    const updatedemail: string = body.email ?? employee.email;
+    const updatedcompanyId: number = body.companyId ?? employee.companyId;
 
     const [updatedRows] = await Employee.update(
       { name: updatedname, email: updatedemail, companyId: updatedcompanyId },
@@ -77,10 +68,7 @@ export const putEmployeeById = async (
 };
 
 // DELETE: Remove employee by ID
-export const deleteEmployeeById = async (
-  req: Request<{ id: string }>,
-  res: Response
-): Promise<void> => {
+export const deleteEmployeeById = async (req: Request, res: Response): Promise<void> => {
   try {
     const id: number = parseInt(req.params.id);
     const employee: employee | null = await Employee.findByPk(id);

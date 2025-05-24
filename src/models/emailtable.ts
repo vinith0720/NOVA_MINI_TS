@@ -1,18 +1,6 @@
 'use strict';
-import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
-
-interface EmailAttributes {
-  id: number;
-  type: string;
-  subject: string;
-  html: string;
-  cc?: string;
-  bcc?: string;
-}
-
-// For `create()` calls, `id` is optional (auto-increment)
-type EmailCreationAttributes = Optional<EmailAttributes, 'id' | 'bcc' | 'cc'>;
-
+import { DataTypes, Model, Sequelize } from 'sequelize';
+import { EmailAttributes, EmailCreationAttributes } from '@dto/email';
 // Sequelize Model class
 export class Email
   extends Model<EmailAttributes, EmailCreationAttributes>
