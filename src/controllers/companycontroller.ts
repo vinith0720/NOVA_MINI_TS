@@ -1,21 +1,20 @@
 import { Request, Response } from 'express';
-import db from '../models';
 import { Company as company } from '@models/company';
-import { companyEmployee } from '@dto/company';
-const { Company, Employee } = db;
+import { companyEmployee, CompanyAttributes, updateCompanyinterface } from '@dto/company';
+import {
+  createCompanyservice,
+  findAllCompany,
+  findCompanyById,
+  companyUpdateNameandLocation,
+  companyfindByPK,
+  deleteCompany,
+} from '@services/companyServices';
+import { updateEmployeenameandEmail } from '@services/employeeServices';
 
 // GET all companies with employees
 export const getCompany = async (req: Request, res: Response): Promise<void> => {
   try {
-    const results: companyEmployee[] = await Company.findAll({
-      include: [
-        {
-          model: Employee,
-          attributes: ['id', 'name', 'email', 'profileurl'],
-          as: 'employees',
-        },
-      ],
-    });
+    const results: companyEmployee[] | null = await findAllCompany();
     res.status(200).json(results);
   } catch (error) {
     res.status(500).json({ error });
@@ -26,16 +25,8 @@ export const getCompany = async (req: Request, res: Response): Promise<void> => 
 export const getCompanyById = async (req: Request, res: Response): Promise<void> => {
   try {
     const id: number = parseInt(req.params.id);
-    const company: companyEmployee | null = await Company.findByPk(id, {
-      include: [
-        {
-          model: Employee,
-          attributes: ['id', 'name', 'email', 'profileurl'],
-          as: 'employees',
-        },
-      ],
-    });
-    // console.log('company id:', company?.get('employees'));
+
+    const company: companyEmployee | null = await findCompanyById(id);
 
     if (!company) {
       res.status(404).json({ msg: 'Company not found' });
@@ -49,10 +40,10 @@ export const getCompanyById = async (req: Request, res: Response): Promise<void>
 };
 
 // POST create new company
-export const postCompany = async (req: Request, res: Response): Promise<void> => {
+export const createCompany = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, location } = req.body;
-    const company: company | null = await Company.create({ name, location });
+    const companyCreateParams: Omit<CompanyAttributes, 'id'> = req.body;
+    const company: company | null = await createCompanyservice(companyCreateParams);
     res.status(201).json({ company });
   } catch (error) {
     res.status(500).json({ error });
@@ -60,16 +51,13 @@ export const postCompany = async (req: Request, res: Response): Promise<void> =>
 };
 
 // PUT update company by ID
-export const putCompanyById = async (req: Request, res: Response): Promise<void> => {
+export const updateCompanyById = async (req: Request, res: Response): Promise<void> => {
   try {
     const id = parseInt(req.params.id);
-    const { name, location, employees } = req.body;
 
-    const company: companyEmployee | null = await Company.findByPk(id, {
-      include: [
-        { model: Employee, as: 'employees', attributes: ['id', 'name', 'email', 'profileurl'] },
-      ],
-    });
+    const updateCompanydata: Partial<updateCompanyinterface> = req.body;
+    const { name, location, employees } = updateCompanydata;
+    const company: companyEmployee | null = await findCompanyById(id);
 
     if (!company) {
       res.status(404).json({ message: 'Company not found' });
@@ -78,22 +66,14 @@ export const putCompanyById = async (req: Request, res: Response): Promise<void>
 
     const updatedName: string = name ?? company.name;
     const updatedLocation: string = location ?? company.location;
-
-    await Company.update({ name: updatedName, location: updatedLocation }, { where: { id } });
+    await companyUpdateNameandLocation(id, updatedName, updatedLocation);
 
     if (Array.isArray(employees) && employees.length > 0) {
       for (const employee of employees) {
-        await Employee.update(
-          { name: employee.name, email: employee.email },
-          { where: { id: employee.id, companyId: id } }
-        );
+        await updateEmployeenameandEmail(id, employee);
       }
     }
-
-    const updatedCompany: company | null = await Company.findByPk(id, {
-      include: [{ model: Employee, as: 'employees' }],
-    });
-
+    const updatedCompany: company | null = await findCompanyById(id);
     res.status(200).json(updatedCompany);
   } catch (error) {
     res.status(500).json({ error });
@@ -104,14 +84,15 @@ export const putCompanyById = async (req: Request, res: Response): Promise<void>
 export const deleteCompanyById = async (req: Request, res: Response): Promise<void> => {
   try {
     const id = parseInt(req.params.id);
-    const company: company | null = await Company.findByPk(id);
+
+    const company: company | null = await companyfindByPK(id);
 
     if (!company) {
       res.status(404).json({ message: 'Company not found' });
       return;
     }
 
-    await Company.destroy({ where: { id } });
+    await deleteCompany(id);
     res.json({ message: 'Company and associated employees deleted successfully' });
   } catch (error) {
     res.status(500).json({ error });

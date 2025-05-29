@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { parseCsvBuffer } from '@utils/csv';
 import { Employee } from '@models/employee';
 
-export const csvtojsonarray = async (
+export const csvtoJsonArray = async (
   req: Request,
   res: Response,
   next: NextFunction

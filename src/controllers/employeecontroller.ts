@@ -2,13 +2,14 @@ import { Request, Response, NextFunction } from 'express';
 import db from '@models/index';
 import { Employee as employee } from '@models/employee';
 import { employeecsv } from '@dto/employee';
+import { EmployeeService } from '@services/employeeServices';
 
 const { Employee } = db;
 
 // GET: All employees
 export const getEmployee = async (req: Request, res: Response): Promise<void> => {
   try {
-    const Employees: employee[] | null = await Employee.findAll();
+    const Employees: employee[] | null = await EmployeeService.getEmployee();
     if (!Employees || Employees.length === 0) {
       res.status(200).json({ msg: 'No Employees found', Employees: [] });
       return;
@@ -20,10 +21,15 @@ export const getEmployee = async (req: Request, res: Response): Promise<void> =>
 };
 
 // POST: Create new employee
-export const postEmployee = async (req: Request, res: Response): Promise<void> => {
+export const createEmployee = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, email, companyId } = req.body;
-    const newEmployee: employee | null = await Employee.create({ name, email, companyId });
+    const employeeData: employeecsv = req.body;
+    const { name, email, companyId } = employeeData;
+    const newEmployee: employee | null = await EmployeeService.createEmployee(
+      name,
+      email,
+      companyId
+    );
     res.status(201).json({
       msg: 'Employee created successfully',
       employee: newEmployee,
@@ -34,12 +40,12 @@ export const postEmployee = async (req: Request, res: Response): Promise<void> =
 };
 
 // PUT: Update employee by ID
-export const putEmployeeById = async (req: Request, res: Response): Promise<void> => {
+export const updateEmployeeById = async (req: Request, res: Response): Promise<void> => {
   try {
     // const { name, email, companyId } = req.body;
     const body: Partial<employeecsv> = req.body;
     const id: number = parseInt(req.params.id);
-    const employee: employee | null = await Employee.findByPk(id);
+    const employee: employee | null = await EmployeeService.getEmployeeByID(id);
 
     if (!employee) {
       res.status(404).json({ msg: 'Employee not found' });
@@ -50,9 +56,11 @@ export const putEmployeeById = async (req: Request, res: Response): Promise<void
     const updatedemail: string = body.email ?? employee.email;
     const updatedcompanyId: number = body.companyId ?? employee.companyId;
 
-    const [updatedRows] = await Employee.update(
-      { name: updatedname, email: updatedemail, companyId: updatedcompanyId },
-      { where: { id } }
+    const [updatedRows] = await EmployeeService.updateEmployee(
+      id,
+      updatedname,
+      updatedemail,
+      updatedcompanyId
     );
 
     if (updatedRows === 1) {
@@ -71,13 +79,13 @@ export const putEmployeeById = async (req: Request, res: Response): Promise<void
 export const deleteEmployeeById = async (req: Request, res: Response): Promise<void> => {
   try {
     const id: number = parseInt(req.params.id);
-    const employee: employee | null = await Employee.findByPk(id);
+    const employee: employee | null = await EmployeeService.getEmployeeByID(id);
     if (!employee) {
       res.status(404).json({ msg: 'Employee not found' });
       return;
     }
 
-    await Employee.destroy({ where: { id } });
+    await EmployeeService.deleteEmployee(id);
     res.status(200).json({ msg: `Employee with ID ${id} deleted successfully!` });
   } catch (error) {
     res.status(500).json({ error });
@@ -91,7 +99,7 @@ export const getEmployeeById = async (
 ): Promise<void> => {
   try {
     const id = parseInt(req.params.id);
-    const employee: employee | null = await Employee.findByPk(id);
+    const employee: employee | null = await EmployeeService.getEmployeeByID(id);
     if (!employee) {
       res.status(404).json({ msg: 'Employee not found' });
       return;
@@ -103,14 +111,14 @@ export const getEmployeeById = async (
 };
 
 // Middleware: check if employee exists before continuing
-export const employeefoundornot = async (
+export const employeeFoundOrNot = async (
   req: Request<{ id: string }>,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
     const id = parseInt(req.params.id);
-    const employee: employee | null = await Employee.findByPk(id);
+    const employee: employee | null = await EmployeeService.getEmployeeByID(id);
     if (!employee) {
       res.status(404).json({ msg: 'Employee not found' });
       return;
@@ -122,7 +130,7 @@ export const employeefoundornot = async (
 };
 
 // POST: Upload employee profile picture
-export const postEmployeeProfileById = async (
+export const createEmployeeProfileById = async (
   req: Request<{ id: string }>,
   res: Response
 ): Promise<void> => {
@@ -136,7 +144,7 @@ export const postEmployeeProfileById = async (
 
     const profileurl = (req.file as any).location;
 
-    const [updatedCount] = await Employee.update({ profileurl }, { where: { id } });
+    const [updatedCount] = await EmployeeService.updateEmployeeProfile(id, profileurl);
 
     if (updatedCount === 1) {
       res.status(200).json({
@@ -155,14 +163,11 @@ export const postEmployeeProfileById = async (
 
 // POST : BulkInsertEmpoyee
 
-export const postBulkInsertEmployee = async (req: Request, res: Response, next: NextFunction) => {
+export const bulkInsertEmployee = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const employees: employeecsv[] = req.body.data;
     console.log(employees);
-    const insertedEmployees = await Employee.bulkCreate(employees, {
-      validate: true,
-      ignoreDuplicates: true,
-    });
+    const insertedEmployees = await EmployeeService.bulkinsertEmployee(employees);
     res.status(201).json({
       message: 'Employees inserted successfully',
       totalInserted: insertedEmployees.length,

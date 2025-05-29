@@ -5,14 +5,14 @@ import {
   deleteCompanyById,
   getCompany,
   getCompanyById,
-  postCompany,
-  putCompanyById,
+  createCompany,
+  updateCompanyById,
 } from '@controllers/companycontroller';
 
 import {
   idValidation,
-  postCompanyValidation,
-  putCompanyValidation,
+  createCompanyValidation,
+  updateCompanyValidation,
   validationErrorMiddleware,
 } from '@middleware/validations';
 
@@ -95,9 +95,15 @@ import authorization from '@middleware/jwt';
  */
 router.get('/', authorization, getCompany);
 
-router.post('/', authorization, postCompanyValidation, validationErrorMiddleware, postCompany);
+router.post('/', authorization, createCompanyValidation, validationErrorMiddleware, createCompany);
 
-router.put('/:id', authorization, putCompanyValidation, validationErrorMiddleware, putCompanyById);
+router.put(
+  '/:id',
+  authorization,
+  updateCompanyValidation,
+  validationErrorMiddleware,
+  updateCompanyById
+);
 
 router.delete('/:id', authorization, idValidation, validationErrorMiddleware, deleteCompanyById);
 

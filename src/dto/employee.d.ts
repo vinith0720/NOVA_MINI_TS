@@ -8,7 +8,9 @@ export interface EmployeeAttributes {
   updatedAt?: Date;
 }
 
-export type employeecsv = Pick<Employee, 'name' | 'email' | 'companyId'>;
+export type employeecsv = Pick<EmployeeAttributes, 'name' | 'email' | 'companyId'>;
+
+export type employeeupdate = Pick<Employee, 'name' | 'email' | 'id'>;
 
 export type EmployeeCreationAttributes = Optional<
   EmployeeAttributes,

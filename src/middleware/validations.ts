@@ -24,7 +24,7 @@ export const jwtTokenValidation = [
 export const idValidation = [param('id').isInt({ min: 1 }).withMessage('Invalid user ID')];
 
 // Employee Body Validations - POST
-export const bodyValidationEmployee = [
+export const createValidationEmployee = [
   body('name')
     .notEmpty()
     .isString()
@@ -43,7 +43,7 @@ export const bodyValidationEmployee = [
 ];
 
 // Employee Body Validations - PUT
-export const putEmployeeValidation = [
+export const updateEmployeeValidation = [
   ...idValidation,
   body('name')
     .optional()
@@ -65,7 +65,7 @@ export const putEmployeeValidation = [
 ];
 
 // Company POST validation
-export const postCompanyValidation = [
+export const createCompanyValidation = [
   body('name')
     .notEmpty()
     .isString()
@@ -82,7 +82,7 @@ export const postCompanyValidation = [
 ];
 
 // Company PUT validation
-export const putCompanyValidation = [
+export const updateCompanyValidation = [
   ...idValidation,
 
   body('name')

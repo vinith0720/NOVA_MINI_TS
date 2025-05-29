@@ -3,38 +3,44 @@ const router = express.Router();
 
 import {
   getEmployee,
-  postEmployee,
-  putEmployeeById,
+  createEmployee,
+  updateEmployeeById,
   deleteEmployeeById,
   getEmployeeById,
-  postEmployeeProfileById,
-  employeefoundornot,
-  postBulkInsertEmployee,
+  createEmployeeProfileById,
+  employeeFoundOrNot,
+  bulkInsertEmployee,
 } from '@controllers/employeecontroller';
 
 import {
   validationErrorMiddleware,
   idValidation,
-  bodyValidationEmployee,
-  putEmployeeValidation,
+  createValidationEmployee,
+  updateEmployeeValidation,
   validateCsvData,
 } from '@middleware/validations';
 
 import authorization from '@middleware/jwt';
 
 import awsUpload, { memmoryUpload } from '@middleware/multers';
-import { csvtojsonarray } from '@middleware/csvEmployeeUpdate';
+import { csvtoJsonArray } from '@middleware/csvEmployeeUpdate';
 
 router.get('/', authorization, getEmployee);
 
-router.post('/', authorization, bodyValidationEmployee, validationErrorMiddleware, postEmployee);
+router.post(
+  '/',
+  authorization,
+  createValidationEmployee,
+  validationErrorMiddleware,
+  createEmployee
+);
 
 router.put(
   '/:id',
   authorization,
-  putEmployeeValidation,
+  updateEmployeeValidation,
   validationErrorMiddleware,
-  putEmployeeById
+  updateEmployeeById
 );
 
 router.delete('/:id', authorization, idValidation, validationErrorMiddleware, deleteEmployeeById);
@@ -48,7 +54,7 @@ router.post(
   authorization,
   idValidation,
   validationErrorMiddleware,
-  employeefoundornot,
+  employeeFoundOrNot,
   (req: Request, res: Response, next: NextFunction) => {
     awsUpload(req, res, function (err) {
       if (err) {
@@ -57,7 +63,7 @@ router.post(
       next();
     });
   },
-  postEmployeeProfileById
+  createEmployeeProfileById
 );
 
 // Bulkinsert Employee with Csv
@@ -74,10 +80,10 @@ router.post(
       next();
     });
   },
-  csvtojsonarray,
+  csvtoJsonArray,
   validateCsvData,
   validationErrorMiddleware,
-  postBulkInsertEmployee
+  bulkInsertEmployee
 );
 
 export default router;
