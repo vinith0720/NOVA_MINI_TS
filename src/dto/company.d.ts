@@ -1,6 +1,6 @@
 import { Company } from '@models/company';
 import { Employee } from '@models/employee';
-import { employeeupdate } from '@dto/employee';
+import { employeeupdate, EmployeeAttributes } from '@dto/employee';
 export interface CompanyAttributes {
   id: number;
   name: string;
@@ -9,9 +9,11 @@ export interface CompanyAttributes {
 
 export type CompanyCreationAttributes = Partial<CompanyAttributes>;
 
-export type companyEmployee = Company & {
-  employees?: Partial<Pick<Employee, 'companyId' | 'email' | 'id' | 'name'>>;
-};
+export type companyEmployee =
+  | (CompanyAttributes & {
+      employees?: Partial<Pick<EmployeeAttributes, 'companyId' | 'email' | 'id' | 'name'>>;
+    })
+  | null;
 
 interface Employeeupdateportion extends CompanyAttributes {
   employees: {

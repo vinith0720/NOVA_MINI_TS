@@ -26,7 +26,7 @@ export const getCompanyById = async (req: Request, res: Response): Promise<void>
   try {
     const id: number = parseInt(req.params.id);
 
-    const company: companyEmployee | null = await findCompanyById(id);
+    const company: companyEmployee = await findCompanyById(id);
 
     if (!company) {
       res.status(404).json({ msg: 'Company not found' });
@@ -43,7 +43,7 @@ export const getCompanyById = async (req: Request, res: Response): Promise<void>
 export const createCompany = async (req: Request, res: Response): Promise<void> => {
   try {
     const companyCreateParams: Omit<CompanyAttributes, 'id'> = req.body;
-    const company: company | null = await createCompanyservice(companyCreateParams);
+    const company: company = await createCompanyservice(companyCreateParams);
     res.status(201).json({ company });
   } catch (error) {
     res.status(500).json({ error });
@@ -51,13 +51,13 @@ export const createCompany = async (req: Request, res: Response): Promise<void> 
 };
 
 // PUT update company by ID
-export const updateCompanyById = async (req: Request, res: Response): Promise<void> => {
+export const updateCompanyById = async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id);
 
     const updateCompanydata: Partial<updateCompanyinterface> = req.body;
     const { name, location, employees } = updateCompanydata;
-    const company: companyEmployee | null = await findCompanyById(id);
+    const company: companyEmployee = await findCompanyById(id);
 
     if (!company) {
       res.status(404).json({ message: 'Company not found' });

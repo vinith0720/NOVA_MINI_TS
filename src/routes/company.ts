@@ -93,20 +93,32 @@ import authorization from '@middleware/jwt';
  *       401:
  *         description: Unauthorized – Token missing or invalid
  */
-router.get('/', authorization, getCompany);
+router.get('/get', authorization, getCompany);
 
-router.post('/', authorization, createCompanyValidation, validationErrorMiddleware, createCompany);
+router.post(
+  '/create',
+  authorization,
+  createCompanyValidation,
+  validationErrorMiddleware,
+  createCompany
+);
 
 router.put(
-  '/:id',
+  'update/:id',
   authorization,
   updateCompanyValidation,
   validationErrorMiddleware,
   updateCompanyById
 );
 
-router.delete('/:id', authorization, idValidation, validationErrorMiddleware, deleteCompanyById);
+router.delete(
+  '/delete/:id',
+  authorization,
+  idValidation,
+  validationErrorMiddleware,
+  deleteCompanyById
+);
 
-router.get('/:id', authorization, idValidation, validationErrorMiddleware, getCompanyById);
+router.get('/getbyid/:id', authorization, idValidation, validationErrorMiddleware, getCompanyById);
 
 export default router;

@@ -25,10 +25,10 @@ import authorization from '@middleware/jwt';
 import awsUpload, { memmoryUpload } from '@middleware/multers';
 import { csvtoJsonArray } from '@middleware/csvEmployeeUpdate';
 
-router.get('/', authorization, getEmployee);
+router.get('/getall', authorization, getEmployee);
 
 router.post(
-  '/',
+  '/create',
   authorization,
   createValidationEmployee,
   validationErrorMiddleware,
@@ -36,21 +36,27 @@ router.post(
 );
 
 router.put(
-  '/:id',
+  '/update/:id',
   authorization,
   updateEmployeeValidation,
   validationErrorMiddleware,
   updateEmployeeById
 );
 
-router.delete('/:id', authorization, idValidation, validationErrorMiddleware, deleteEmployeeById);
+router.delete(
+  '/delete/:id',
+  authorization,
+  idValidation,
+  validationErrorMiddleware,
+  deleteEmployeeById
+);
 
-router.get('/:id', authorization, idValidation, validationErrorMiddleware, getEmployeeById);
+router.get('/getbyid/:id', authorization, idValidation, validationErrorMiddleware, getEmployeeById);
 
 // profileurl for aws releted to employee
 
 router.post(
-  '/profile/:id',
+  '/updateprofile/:id',
   authorization,
   idValidation,
   validationErrorMiddleware,
