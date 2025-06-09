@@ -17,14 +17,14 @@ const config: DBConfig = {
   },
   test: {
     username: 'root',
-    password: '',
-    database: 'database_test',
+    password: 'root',
+    database: 'novamini',
     host: '127.0.0.1',
     dialect: 'mysql',
   },
   production: {
     username: 'root',
-    password: '',
+    password: 'root',
     database: 'database_production',
     host: '127.0.0.1',
     dialect: 'mysql',

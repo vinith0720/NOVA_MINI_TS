@@ -21,7 +21,7 @@
       "@services/*": ["src/services/*"]
     },
     "resolveJsonModule": true, // Import JSON files
-    "types": ["node"] // Include Node.js types
+    "types": ["jest", "node"] // Include Node.js types
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist", "migration", "seeders"]
