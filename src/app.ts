@@ -1,6 +1,6 @@
 // import 'module-alias/register';
 
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import multer from 'multer';
 
@@ -31,7 +31,7 @@ app.use('/email', emailRouter);
 
 // error handler middleware
 
-app.use((err: any, req: Request, res: Response): void => {
+app.use((err: any, req: Request, res: Response, _next: NextFunction): void => {
   console.error(err.stack);
   if (err instanceof multer.MulterError) {
     res.status(400).json({ error: `Multer Error: ${err.message}` });

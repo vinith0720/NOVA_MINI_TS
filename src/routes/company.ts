@@ -73,7 +73,7 @@ import authorization from '@middleware/jwt';
 
 /**
  * @swagger
- * /company/:
+ * /company/get:
  *   get:
  *     summary: Get all companies with their employees
  *     description: Requires an auth token in the `authorization` header
