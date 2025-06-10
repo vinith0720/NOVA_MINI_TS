@@ -7,7 +7,6 @@ describe('POST /', () => {
 
     expect(response.statusCode).toBe(200);
 
-    // ✅ if the response has { token: 'some-token' }
     expect(response.body).toMatchObject({
       token: expect.any(String),
     });

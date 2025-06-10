@@ -6,6 +6,7 @@
   "scripts": {
     "start": "tsx ./src/bin/www",
     "test": "jest",
+    "test:cov": "cross-env NODE_ENV=development jest --coverage",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier --write .",
@@ -52,6 +53,7 @@
     "@types/supertest": "^6.0.3",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
+    "cross-env": "^7.0.3",
     "eslint": "^9.25.1",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-prettier": "^5.2.6",
@@ -61,6 +63,7 @@
     "sequelize-typescript": "^2.1.6",
     "supertest": "^7.1.1",
     "ts-jest": "^29.3.4",
+    "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.19.3",
     "typescript": "^5.8.3",
