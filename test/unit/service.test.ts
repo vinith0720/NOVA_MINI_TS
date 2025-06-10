@@ -11,4 +11,13 @@ describe('POST /', () => {
       token: expect.any(String),
     });
   });
+
+  it('shoul return a message company not found', async () => {
+    const response = await request(app).post('/').send({ name: 'nice' });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toStrictEqual({
+      message: 'Company not found',
+    });
+  });
 });

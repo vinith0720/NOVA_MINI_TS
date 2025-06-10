@@ -55,7 +55,7 @@ export const loginToken = async (
     const { name } = req.body;
     const company = await Company.findOne({ where: { name } });
     if (!company) {
-      res.status(404).json({ message: 'Company not found' });
+      res.status(400).json({ message: 'Company not found' });
       return;
     }
     const token = jwt.sign(
