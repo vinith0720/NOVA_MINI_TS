@@ -21,3 +21,22 @@ describe('POST /', () => {
     });
   });
 });
+
+describe('GET /', () => {
+  let token: string;
+  beforeAll(async () => {
+    const response = await request(app).post('/').send({ name: 'novastrid' });
+    console.log(response.body);
+
+    token = response.body.token;
+  });
+
+  it('Should return a list of company', async () => {
+    const response = await request(app).get('/company/get').set('authorization', token);
+
+    // expect(response.body).toEqual({
+    //   message: 'Access denied. No token provided.',
+    // });
+    expect(response.statusCode).toBe(200);
+  });
+});
